@@ -1,0 +1,176 @@
+<div ng-controller="CollaborationController as self" layout="column" flex>
+    <div ng-if="!self.user" class="md-padding">
+        <div>Login width: </div>
+        <md-button class="md-raised md-primary" ng-click="self.signInGoogle()">Google</md-button>
+        <md-button class="md-raised md-primary" ng-click="self.signInFacebook()">Facebook</md-button>
+        <md-button class="md-raised md-primary" ng-click="self.signInWithCredential($event)">Sign In</md-button>
+    </div>
+    <div ng-if="self.user" class="md-padding" flex layout="column">
+        <div layout="row" layout-align="end end">
+            <md-button ng-click="self.signOut()" class="md-raised md-primary">Sign out</md-button>
+        </div>
+        <div layout="row" flex>
+            <div flex="30" layout="column">
+                <div id="commentArea" class="md-whiteframe-2dp"
+                    style="margin-right: 8px;background: #fff;overflow: auto"
+                    flex>
+                    <div ng-repeat="m in self.messages" class="md-padding">
+                        <div>{{m.userName}}:</div>
+                        <div>{{m.content}}</div>
+                    </div>
+                </div>
+                <div>
+                    <br/>
+                    <md-input-container md-no-float style="margin: 0px;"
+                        class="md-block">
+                        <input ng-model="self.message" placeholder="Add comment here..."/>
+                    </md-input-container>
+                    <div layout="row" layout-align="end end">
+                        <md-button class="md-raised md-primary" ng-click="self.add()"
+                            ng-disabled="!self.message">comment</md-button>
+                    </div>
+                </div>
+            </div>
+            <div flex layout="column">
+                <div flex layout="column">
+                    <div flex id="boxWrapper"></div>
+                </div>
+                <div id="boxCustomize" layout="column">
+                    <md-tabs md-border-bottom flex>
+                        <md-tab label="Body">
+                            <md-content class="md-padding" layout="row">
+                                <div flex="70">
+                                    <md-slider-container ng-repeat="d in self.dimensions">
+                                        <span>{{d.name}}</span>
+                                        <md-slider flex min="10" max="100" ng-model="self.body[d.key]"
+                                            ng-change="self.updateBodySize()" aria-label="change size"
+                                            class="md-primary"></md-slider>
+                                        <md-input-container>
+                                            <input flex type="number" ng-model="self.body[d.key]" aria-label="change size"/>
+                                        </md-input-container>
+                                    </md-slider-container>
+                                </div>
+                                <div flex layout="column" class="md-padding"
+                                    style="padding-top: 0px">
+                                    <div>
+                                        <md-input-container style="width: 120px">
+                                            <label>Style</label>
+                                            <md-select ng-model="self.body.material"
+                                                ng-change="self.updateBodyMaterial('material')">
+                                                <md-option ng-repeat="item in self.materials" ng-value="item.url">
+                                                    <img ng-src="{{getImageResource(item.url)}}" width="100" height="25"/>
+                                                </md-option>
+                                            </md-select>
+                                        </md-input-container>
+                                    </div>
+                                    <div md-color-picker ng-model="self.body.color"
+                                        label="Color"></div>
+                                </div>
+                            </md-content>
+                        </md-tab>
+                        <md-tab label="Lid">
+                            <md-content class="md-padding" layout="row">
+                                <div flex="70" layout="column">
+                                    <md-checkbox ng-model="self.lid.open" aria-label="Checkbox 1"
+                                        ng-change="self.updateLidSize()">
+                                        Open
+                                    </md-checkbox>
+                                    <md-slider-container>
+                                        <span>Height</span>
+                                        <md-slider flex min="10" max="25" ng-model="self.lid.height"
+                                            ng-change="self.updateLidSize()"
+                                            aria-label="change size"
+                                            class="md-primary"></md-slider>
+                                        <md-input-container>
+                                            <input flex type="number" ng-model="self.lid.height" aria-label="change size"/>
+                                        </md-input-container>
+                                    </md-slider-container>
+                                </div>
+                                <div flex layout="column" class="md-padding"
+                                    style="padding-top: 0px">
+                                    <div>
+                                        <md-input-container style="width: 120px">
+                                            <label>Style</label>
+                                            <md-select ng-model="self.lid.material"
+                                                ng-change="self.updateLidMaterial('material')">
+                                                <md-option ng-repeat="item in self.materials" ng-value="item.url">
+                                                    <img ng-src="{{getImageResource(item.url)}}" width="100" height="25"/>
+                                                </md-option>
+                                            </md-select>
+                                        </md-input-container>
+                                    </div>
+                                    <div md-color-picker ng-model="self.lid.color"
+                                        label="Color"></div>
+                                </div>
+                            </md-content>
+                        </md-tab>
+                        <md-tab label="Shape">
+                            <md-content class="md-padding">
+                                <img id="circleShape" src="http://www.pngmart.com/files/4/Circle-PNG-Image.png"
+                                width="20" height="20"/>
+                            </md-content>
+                        </md-tab>
+                        <md-tab label="Properties">
+                            <div layout="row" class="md-padding" style="height: 100%">
+                                <div style="width: 200px; overflow: auto">
+                                    <div ng-repeat="s in self.body.shapes">
+                                        <div ng-click="self.selectShape(s)"
+                                            ng-style="{'background': self.currentShape.mesh.uuid == s.mesh.uuid ? '#8BC34A' : ''}"
+                                            style="cursor: pointer; outline: none; padding: 4px;">
+                                            {{s.name}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div flex style="overflow: auto; margin-left: 1em"
+                                    ng-show="self.currentShape">
+                                    <div layout="row">
+                                        <div layout="row" layout-align="start center">
+                                            <div>X</div>
+                                            <md-input-container>
+                                                <input type="number" step="1" min="-50" max="50"
+                                                    ng-model="self.currentShape.coordinate.x" ng-change="self.updateBodyShape()"/>
+                                            </md-input-container>
+                                        </div>
+                                        <div layout="row" layout-align="start center">
+                                            <div>Y</div>
+                                            <md-input-container>
+                                                <input type="number" step="1" min="-50" max="50"
+                                                    ng-model="self.currentShape.coordinate.y" ng-change="self.updateBodyShape()"/>
+                                            </md-input-container>
+                                        </div>
+                                    </div>
+                                    <div layout="row" layout-align="start center">
+                                        <div>Radius</div>
+                                        <md-input-container>
+                                            <input type="number" step="1" min="-50" max="50"
+                                                ng-model="self.currentShape.coordinate.r" ng-change="self.updateBodyShape()"/>
+                                        </md-input-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </md-tab>
+                        <md-tab label="Messaging">
+                            <md-content class="md-padding">
+                                <md-input-container>
+                                    <label>Type here...</label>
+                                    <input ng-model="self.message" />
+                                </md-input-container>
+                                <md-button class="md-raised md-primary" ng-click="self.postMessage()"
+                                    ng-disabled="!self.message">post</md-button>
+                            </md-content>
+                        </md-tab>
+                    </md-tabs>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        .md-errors-spacer {
+            display: none;
+        }
+
+        #boxCustomize {
+            height: 300px;
+        }
+    </style>
+</div>

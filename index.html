@@ -1,0 +1,62 @@
+<html>
+
+<head>
+    <meta name="google-signin-client_id" content="619430236261-p2ppg5jrma6nvm4n574si3pq9gg52apl.apps.googleusercontent.com">
+    <meta name="google-signin-cookiepolicy" content="single_host_origin">
+    <meta name="google-signin-scope" content="profile email">
+    <link rel="stylesheet" href="css/angular-material.min.css">
+    <link rel="stylesheet" href="css/angular-toasty.min.css">
+    <link rel="stylesheet" href="css/loading-bar.min.css">
+    <link rel="stylesheet" href="css/mdColorPicker.min.css">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+
+<body ng-app="coolbox" layout="column">
+    <div ui-view="main" flex layout="column"></div>
+    <toasty></toasty>
+
+    <script src="js/three/lib/three.min.js"></script>
+    <script src="js/three/lib/OrbitControls.js"></script>
+    <script src="js/three/lib/ThreeCSG.js"></script>
+    <script src="js/three/box-viewer.js"></script>
+    <script src="js/three/mesh-helper.js"></script>
+    <script src="js/tinycolor.min.js"></script>
+
+    <script src="js/moment.min.js"></script>
+    <script src="app/common.js"></script>
+    <script src="app/config.js"></script>
+
+    <script src="js/angular/angular.min.js"></script>
+    <script src="js/angular/angular-aria.min.js"></script>
+    <script src="js/angular/angular-animate.min.js"></script>
+    <script src="js/angular/angular-sanitize.min.js"></script>
+    <script src="js/angular/angular-messages.min.js"></script>
+    <script src="js/angular/angular-material.min.js"></script>
+    <script src="js/angular/angular-ui-router.min.js"></script>
+    <script src="js/angular/ocLazyLoad.min.js"></script>
+    <script src="js/angular/angular-toasty.min.js"></script>
+    <script src="js/angular/angular-local-storage.min.js"></script>
+    <script src="js/angular/http-auth-interceptor.min.js"></script>
+    <script src="js/angular/loading-bar.min.js"></script>
+    <script src="js/angular/plugin/mdColorPicker.min.js"></script>
+
+    <script src="app/app.js"></script>
+
+    <script src="app/services/theme.service.js"></script>
+
+    <!-- <script src="app/blocks/interceptor/auth.interceptor.js"></script> -->
+    <script src="app/blocks/handlers/state.handler.js"></script>
+    <!-- <script src="app/blocks/handlers/http.handler.js"></script> -->
+
+    <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase-messaging.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="js/firebase/authen-fb.js" async defer></script>
+    <script src="js/firebase/message-fb.js" async defer></script>
+    <script src="js/firebase/database-fb.js" async defer></script>
+</body>
+
+</html>
